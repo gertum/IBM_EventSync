@@ -23,7 +23,7 @@ public class EventController {
     private EventRepository eventRepository;
 
     @GetMapping
-    public Iterable findAll() {
+    public Iterable<Event> findAll() {
         return eventRepository.findAll();
     }
 

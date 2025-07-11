@@ -2,7 +2,6 @@ package com.ibm.event_sync;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
