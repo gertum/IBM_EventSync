@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+
 
 @Entity
 public class Event {
@@ -13,9 +15,11 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @NotNull
     @Column(nullable = false, unique = true)
     private String title;
 
+    @NotNull
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 

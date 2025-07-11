@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import com.ibm.event_sync.entity.Event;
 import com.ibm.event_sync.repository.EventRepository;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
@@ -38,7 +40,7 @@ public class EventController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Event create(@RequestBody Event event) {
+    public Event create(@RequestBody @Valid Event event) {
         return eventRepository.save(event);
     }
 

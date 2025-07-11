@@ -13,6 +13,6 @@ public class RouteController {
    @GetMapping("/")
    public String homePage(Model model) {
        model.addAttribute("appName", appName);
-       return "home1";
+       return "home";
    }
 }
