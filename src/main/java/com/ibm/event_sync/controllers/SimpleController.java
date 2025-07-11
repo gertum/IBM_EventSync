@@ -1,4 +1,4 @@
-package com.ibm.event_sync;
+package com.ibm.event_sync.controllers;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
