@@ -2,6 +2,10 @@ package com.ibm.event_sync.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +26,7 @@ public class Feedback {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String text;
 
-    @NotNull
+    @JsonProperty(access = Access.READ_ONLY)
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

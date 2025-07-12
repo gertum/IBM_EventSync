@@ -6,7 +6,7 @@ Run `./mvnw clean` for a clean rebuild.
 
 Run
 
-Run `./mvnw spring-boot:run./mvn` to run app.
+Run `./mvnw spring-boot:run` to run app.
 
 Test
 
