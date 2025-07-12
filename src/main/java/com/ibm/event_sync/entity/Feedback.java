@@ -14,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -29,6 +31,12 @@ public class Feedback {
     @JsonProperty(access = Access.READ_ONLY)
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @JsonProperty(access = Access.READ_ONLY)
+    @Min(1)
+    @Max(5)
+    @Column(nullable = false, updatable = false)
+    private int sentiment;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "event_id", nullable = false)
