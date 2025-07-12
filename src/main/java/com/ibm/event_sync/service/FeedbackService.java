@@ -1,6 +1,5 @@
 package com.ibm.event_sync.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -17,8 +16,7 @@ import com.ibm.event_sync.entity.Event;
 import com.ibm.event_sync.entity.Feedback;
 import com.ibm.event_sync.repository.EventRepository;
 import com.ibm.event_sync.repository.FeedbackRepository;
-
-import jakarta.annotation.PostConstruct;
+import org.springframework.scheduling.annotation.Async;
 
 @Service
 public class FeedbackService {
@@ -29,8 +27,7 @@ public class FeedbackService {
     private final String HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/nlptown/bert-base-multilingual-uncased-sentiment";
 
     @Value("${hf.api.key}")
-    public String API_KEY; //no
-    // private String API_KEY;
+    private String API_KEY;
 
     public FeedbackService(FeedbackRepository feedbackRepository, EventRepository eventRepository) {
         this.feedbackRepository = feedbackRepository;
@@ -49,8 +46,6 @@ public class FeedbackService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
         feedback.setEvent(event);
-        // updated at would be nice?? also is already done in the rep
-        // feedback.setCreatedAt(LocalDateTime.now());
 
         // Analyze sentiment
         String sentiment = analyzeSentiment(feedback.getText());
