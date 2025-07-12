@@ -2,8 +2,14 @@ package com.ibm.event_sync.service;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.ibm.event_sync.entity.Event;
 import com.ibm.event_sync.entity.Feedback;
@@ -57,11 +63,11 @@ public class FeedbackService {
 
     private String extractSentimentLabel(String json) {
         // quick-and-dirty parse — refine if needed
-        if (json.contains("1 star")) return "very negative";
+        if (json.contains("1 star")) return "negative";
         if (json.contains("2 stars")) return "negative";
         if (json.contains("3 stars")) return "neutral";
         if (json.contains("4 stars")) return "positive";
-        if (json.contains("5 stars")) return "very positive";
+        if (json.contains("5 stars")) return "positive";
         return "unknown";
     }
 }

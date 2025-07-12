@@ -33,10 +33,10 @@ public class Feedback {
     private LocalDateTime createdAt;
 
     @JsonProperty(access = Access.READ_ONLY)
-    @Min(1)
-    @Max(5)
+    // @Min(1)
+    // @Max(5)
     @Column(nullable = false, updatable = false)
-    private int sentiment;
+    private String sentiment;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "event_id", nullable = false)
@@ -51,8 +51,13 @@ public class Feedback {
         return id;
     }
 
+    //?
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setSentiment(String sentiment) {
+        this.sentiment = sentiment;
     }
 
     public String getText() {
