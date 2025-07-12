@@ -1,4 +1,4 @@
-package com.ibm.event_sync.service;
+package com.ibm.event_sync.routing;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
