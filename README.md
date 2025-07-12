@@ -31,6 +31,11 @@ Paste the afforementioned access token into the newly created duplicate replacin
 
 ## Run
 
+### Docker
+
+docker build -t springboot-app .
+docker run -p 8081:8081 springboot-app
+
 ### Build
 
 Run `./mvnw clean` for a clean rebuild.
