@@ -1,6 +1,7 @@
 package com.ibm.event_sync.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -17,6 +18,8 @@ import com.ibm.event_sync.entity.Feedback;
 import com.ibm.event_sync.repository.EventRepository;
 import com.ibm.event_sync.repository.FeedbackRepository;
 
+import jakarta.annotation.PostConstruct;
+
 @Service
 public class FeedbackService {
     private final FeedbackRepository feedbackRepository;
@@ -24,15 +27,17 @@ public class FeedbackService {
     private final RestTemplate restTemplate;
 
     private final String HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/nlptown/bert-base-multilingual-uncased-sentiment";
-    
+
     @Value("${hf.api.key}")
-    private String API_KEY;
+    public String API_KEY; //no
+    // private String API_KEY;
 
     public FeedbackService(FeedbackRepository feedbackRepository, EventRepository eventRepository) {
         this.feedbackRepository = feedbackRepository;
         this.eventRepository = eventRepository;
         this.restTemplate = new RestTemplate();
     }
+
     /**
      * A function for adding feedback to the repository.
      * 
@@ -42,7 +47,7 @@ public class FeedbackService {
      */
     public Feedback addFeedback(Long eventId, Feedback feedback) {
         Event event = eventRepository.findById(eventId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
         feedback.setEvent(event);
         // updated at would be nice?? also is already done in the rep
         // feedback.setCreatedAt(LocalDateTime.now());
@@ -55,7 +60,9 @@ public class FeedbackService {
     }
 
     /**
-     * Call the ai api and classify the determined sentiment as negative positive or neutral.
+     * Call the ai api and classify the determined sentiment as negative positive or
+     * neutral.
+     * 
      * @param text
      * @return
      */
@@ -63,6 +70,7 @@ public class FeedbackService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(API_KEY);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         String payload = String.format("{\"inputs\": \"%s\"}", text);
         HttpEntity<String> entity = new HttpEntity<>(payload, headers);
@@ -78,12 +86,16 @@ public class FeedbackService {
 
     private String extractSentimentLabel(String json) {
         // quick-and-dirty parse — refine if needed
-        if (json.contains("1 star")) return "negative";
-        if (json.contains("2 stars")) return "negative";
-        if (json.contains("3 stars")) return "neutral";
-        if (json.contains("4 stars")) return "positive";
-        if (json.contains("5 stars")) return "positive";
+        if (json.contains("1 star"))
+            return "negative";
+        if (json.contains("2 stars"))
+            return "negative";
+        if (json.contains("3 stars"))
+            return "neutral";
+        if (json.contains("4 stars"))
+            return "positive";
+        if (json.contains("5 stars"))
+            return "positive";
         return "unknown";
     }
 }
-

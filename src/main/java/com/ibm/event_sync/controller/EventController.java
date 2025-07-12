@@ -34,6 +34,9 @@ public class EventController {
   @Autowired
   private FeedbackRepository feedbackRepository;
 
+  @Autowired
+  private FeedbackService feedbackService;
+
   @GetMapping
   public Iterable<Event> findAll() {
     return eventRepository.findAll();
@@ -53,7 +56,6 @@ public class EventController {
     /// call service instead of the rep directly
     ///
 
-    FeedbackService feedbackService = new FeedbackService(feedbackRepository, eventRepository);
     return feedbackService.addFeedback(id, feedback);
 
     // Event event = eventRepository.findById(id)
