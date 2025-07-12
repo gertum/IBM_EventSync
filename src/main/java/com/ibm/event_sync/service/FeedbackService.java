@@ -2,6 +2,7 @@ package com.ibm.event_sync.service;
 
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,18 +24,27 @@ public class FeedbackService {
     private final RestTemplate restTemplate;
 
     private final String HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/nlptown/bert-base-multilingual-uncased-sentiment";
-    private final String API_KEY = "your_hf_api_key"; // use env or config
+    
+    @Value("${hf.api.key}")
+    private String API_KEY;
 
     public FeedbackService(FeedbackRepository feedbackRepository, EventRepository eventRepository) {
         this.feedbackRepository = feedbackRepository;
         this.eventRepository = eventRepository;
         this.restTemplate = new RestTemplate();
     }
-
+    /**
+     * A function for adding feedback to the repository.
+     * 
+     * @param eventId
+     * @param feedback
+     * @return
+     */
     public Feedback addFeedback(Long eventId, Feedback feedback) {
         Event event = eventRepository.findById(eventId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
         feedback.setEvent(event);
+        // updated at would be nice?? also is already done in the rep
         // feedback.setCreatedAt(LocalDateTime.now());
 
         // Analyze sentiment
@@ -44,6 +54,11 @@ public class FeedbackService {
         return feedbackRepository.save(feedback);
     }
 
+    /**
+     * Call the ai api and classify the determined sentiment as negative positive or neutral.
+     * @param text
+     * @return
+     */
     private String analyzeSentiment(String text) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

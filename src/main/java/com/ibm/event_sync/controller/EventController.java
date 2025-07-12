@@ -20,6 +20,7 @@ import com.ibm.event_sync.entity.Event;
 import com.ibm.event_sync.entity.Feedback;
 import com.ibm.event_sync.repository.EventRepository;
 import com.ibm.event_sync.repository.FeedbackRepository;
+import com.ibm.event_sync.service.FeedbackService;
 
 import jakarta.validation.Valid;
 
@@ -47,11 +48,20 @@ public class EventController {
   @PostMapping("/{id}/feedback")
   @ResponseStatus(HttpStatus.CREATED)
   public Feedback addFeedback(@PathVariable Long id, @RequestBody @Valid Feedback feedback) {
-    Event event = eventRepository.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
 
-    feedback.setEvent(event);
-    return feedbackRepository.save(feedback);
+    ///////////
+    /// call service instead of the rep directly
+    ///
+
+    FeedbackService feedbackService = new FeedbackService(feedbackRepository, eventRepository);
+    return feedbackService.addFeedback(id, feedback);
+
+    // Event event = eventRepository.findById(id)
+    // .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event
+    // not found"));
+
+    // feedback.setEvent(event);
+    // return feedbackRepository.save(feedback);
   }
 
   @GetMapping("/{id}/feedback")
