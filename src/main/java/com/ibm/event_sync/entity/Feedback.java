@@ -35,7 +35,7 @@ public class Feedback {
     @JsonProperty(access = Access.READ_ONLY)
     // @Min(1)
     // @Max(5)
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private String sentiment;
 
     @ManyToOne(optional = false)
@@ -59,6 +59,11 @@ public class Feedback {
     public void setSentiment(String sentiment) {
         this.sentiment = sentiment;
     }
+
+    public String getSentiment() {
+        return this.sentiment;
+    }
+
 
     public String getText() {
         return text;

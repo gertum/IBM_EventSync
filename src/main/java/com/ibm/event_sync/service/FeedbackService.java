@@ -50,22 +50,30 @@ public class FeedbackService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
         feedback.setEvent(event);
         feedback.setSentiment("pending");
-
         Feedback savedFeedback = feedbackRepository.save(feedback);
+
+        System.out.println("Synchrounous part which has pending sentiment: "+ savedFeedback.getSentiment()); /// TODO remove
 
         // Kick off async sentiment analysis
         analyzeAndUpdateSentimentAsync(savedFeedback.getId(), feedback.getText());
+
+        
+        System.out.println("The part where sentiment could be anything ;) : " + savedFeedback.getSentiment()); /// TODO remove
 
         return savedFeedback;
     }
 
     @Async
     public CompletableFuture<Void> analyzeAndUpdateSentimentAsync(Long feedbackId, String text) {
+        System.out.println("Starting async sentiment analysis..."); /// TODO remove
+
         String sentiment = analyzeSentiment(text);
+        System.out.println("Sentiment result: " + sentiment); /// TODO remove
 
         feedbackRepository.findById(feedbackId).ifPresent(fb -> {
             fb.setSentiment(sentiment);
             feedbackRepository.save(fb);
+            System.out.println("Feedback updated with sentiment: " + sentiment); /// TODO remove
         });
 
         return CompletableFuture.completedFuture(null);
