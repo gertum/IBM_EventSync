@@ -66,7 +66,7 @@ Tests are located in *src\test\java\com\ibm\event_sync* folder.
 
 * Java 17
 * Maven
-* Spring boot
+* Spring Boot
 * H2 database
 
 * *HuggingFace* *AI* model *nlptown/bert-base-multilingual-uncased-sentiment*
