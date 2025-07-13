@@ -8,8 +8,6 @@ feedback and automatically analyzes it using an AI sentiment analysis API (
 Hugging Face). The system classifies each feedback as
 positive, neutral, or negative and provides a summary per event.
 
-
-
 ## Setup
 
 In order to use an AI agent for the project one must create an account on [https://huggingface.co](https://) and generate an access token there.
@@ -22,26 +20,28 @@ Paste the afforementioned access token into the newly created duplicate replacin
 
 ## Run
 
-### Docker
-
-docker build -t springboot-app .
-docker run -p 8081:8081 springboot-app
+The project may be deployed either directly or using a docker container.
 
 ### Build
 
 Run `./mvnw clean` for a clean rebuild.
 
-### Run
+### Run inside *Docker*
+
+`docker build -t event-sync-app .`
+`docker run -p 8081:8081 event-sync-app`
+
+### Run directly
 
 Run `./mvnw spring-boot:run` to run app.
 
 ## Test
 
-Run ./mvn test to run app tests.
+Run `./mvn test` to run app tests.
 
 ## Debug
 
-There is .vscode/launch.json file provided for debugging using the visual studio code IDE. It may be used in assisting of launching a debugging session.
+There is *.vscode/launch.json* file provided for debugging using the visual studio code IDE. It may be used in assisting of launching a debugging session.
 
 ## Project structure
 
@@ -58,3 +58,10 @@ Tests are located in *src\test\java\com\ibm\event_sync* folder.
 
 ### Data
 
+## Project specifications
+
+* Java 17
+* Maven
+* Spring boot
+
+* *HuggingFace* *AI* model *nlptown/bert-base-multilingual-uncased-sentiment*

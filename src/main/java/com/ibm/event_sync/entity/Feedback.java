@@ -32,6 +32,10 @@ public class Feedback {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    public enum OrderStatus {
+        PENDING, PROCESSING, SHIPPED, DELIVERED, CANCELED
+    }
+
     @JsonProperty(access = Access.READ_ONLY)
     // @Min(1)
     // @Max(5)
@@ -51,7 +55,7 @@ public class Feedback {
         return id;
     }
 
-    //?
+    // ?
     public void setId(long id) {
         this.id = id;
     }
@@ -63,7 +67,6 @@ public class Feedback {
     public String getSentiment() {
         return this.sentiment;
     }
-
 
     public String getText() {
         return text;
