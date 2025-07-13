@@ -59,6 +59,14 @@ public class SentimentAnalysisService {
         }
     }
 
+    public void analyzeAndUpdateSentiment(Long feedbackId, String text) {
+    Sentiment sentiment = analyzeSentiment(text);
+    feedbackRepository.findById(feedbackId).ifPresent(fb -> {
+        fb.setSentiment(sentiment);
+        feedbackRepository.save(fb);
+    });
+}
+
     /**
      * 
      * @param json The AI model API returns a json array which contains the sentiment label and the sentiment probability.
