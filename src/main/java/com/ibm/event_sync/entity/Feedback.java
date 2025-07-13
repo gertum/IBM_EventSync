@@ -50,11 +50,6 @@ public class Feedback {
         return id;
     }
 
-    // ?
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public void setSentiment(Sentiment sentiment) {
         this.sentiment = sentiment;
     }

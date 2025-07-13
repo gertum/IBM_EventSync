@@ -5,7 +5,6 @@ import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibm.event_sync.entity.Feedback;
 import com.ibm.event_sync.entity.Feedback.Sentiment;
 import com.ibm.event_sync.repository.FeedbackRepository;
 import org.springframework.beans.factory.annotation.Value;
