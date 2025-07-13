@@ -12,7 +12,7 @@ public class EventViewController {
 
     @GetMapping("/{id}/feedback/")
     public String viewEvent(@PathVariable Long id, Model model) {
-        model.addAttribute("event", id);
+        model.addAttribute("eventId", id);
         return "event-feedback";
     }
 }
