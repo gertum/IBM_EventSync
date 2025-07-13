@@ -8,6 +8,15 @@ feedback and automatically analyzes it using an AI sentiment analysis API (
 Hugging Face). The system classifies each feedback as
 positive, neutral, or negative and provides a summary per event.
 
+## Features
+
+As suggested in the excercise description, there are 4 api endpoints:
+
+• POST /events – create new event 
+• GET /events – list all events 
+• POST /events/{eventId}/feedback – submit feedback for an event 
+• GET /events/{eventId}/summary – return sentiment breakdown for the event
+
 ## Setup
 
 In order to use an AI agent for the project one must create an account on [https://huggingface.co](https://) and generate an access token there.
