@@ -12,11 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.event_sync.entity.Event;
 import com.ibm.event_sync.entity.Feedback;
 import com.ibm.event_sync.repository.EventRepository;
 import com.ibm.event_sync.repository.FeedbackRepository;
 import org.springframework.scheduling.annotation.Async;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class FeedbackService {
@@ -46,12 +49,26 @@ public class FeedbackService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
         feedback.setEvent(event);
+        feedback.setSentiment("pending");
 
-        // Analyze sentiment
-        String sentiment = analyzeSentiment(feedback.getText());
-        feedback.setSentiment(sentiment);
+        Feedback savedFeedback = feedbackRepository.save(feedback);
 
-        return feedbackRepository.save(feedback);
+        // Kick off async sentiment analysis
+        analyzeAndUpdateSentimentAsync(savedFeedback.getId(), feedback.getText());
+
+        return savedFeedback;
+    }
+
+    @Async
+    public CompletableFuture<Void> analyzeAndUpdateSentimentAsync(Long feedbackId, String text) {
+        String sentiment = analyzeSentiment(text);
+
+        feedbackRepository.findById(feedbackId).ifPresent(fb -> {
+            fb.setSentiment(sentiment);
+            feedbackRepository.save(fb);
+        });
+
+        return CompletableFuture.completedFuture(null);
     }
 
     /**
@@ -80,17 +97,31 @@ public class FeedbackService {
     }
 
     private String extractSentimentLabel(String json) {
-        // quick-and-dirty parse — refine if needed
-        if (json.contains("1 star"))
-            return "negative";
-        if (json.contains("2 stars"))
-            return "negative";
-        if (json.contains("3 stars"))
-            return "neutral";
-        if (json.contains("4 stars"))
-            return "positive";
-        if (json.contains("5 stars"))
-            return "positive";
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(json);
+            // root is an array, get first element which is another array
+            JsonNode firstArray = root.get(0);
+            if (firstArray != null && firstArray.isArray() && firstArray.size() > 0) {
+                JsonNode firstElement = firstArray.get(0);
+                String label = firstElement.get("label").asText();
+
+                switch (label) {
+                    case "1 star":
+                    case "2 stars":
+                        return "negative";
+                    case "3 stars":
+                        return "neutral";
+                    case "4 stars":
+                    case "5 stars":
+                        return "positive";
+                    default:
+                        return "unknown";
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "unknown";
     }
 }

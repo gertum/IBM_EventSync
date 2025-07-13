@@ -39,6 +39,10 @@ Run `./mvnw spring-boot:run` to run app.
 
 Run ./mvn test to run app tests.
 
+## Debug
+
+There is .vscode/launch.json file provided for debugging using the visual studio code IDE. It may be used in assisting of launching a debugging session.
+
 ## Project structure
 
 ### Code
