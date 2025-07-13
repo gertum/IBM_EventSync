@@ -1,7 +1,24 @@
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head><title>Home Page</title></head>
+<!-- home.html -->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+
+<head>
+    <title layout:fragment="title">Home Page</title>
+</head>
+
 <body>
-    <h1>Hello !</h1>
-    <p>Welcome to <span th:text="${appName}">Our App</span></p>
+    <div layout:fragment="content">
+        <h2 class="text-success">Hello!</h2>
+        <p class="lead">
+            Welcome to <span th:text="${appName}">Our App</span>. It helps teams organize events
+            like workshops, team buildings, or small conferences. After each event, participants
+            leave written feedback.
+            A backend application accepts this
+            feedback and automatically analyzes it using an AI sentiment analysis API (
+            Hugging Face). The system classifies each feedback as
+            positive, neutral, or negative and provides a summary per event.
+        </p>
+    </div>
 </body>
+
 </html>
