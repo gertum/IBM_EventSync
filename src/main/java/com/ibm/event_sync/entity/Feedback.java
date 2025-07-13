@@ -2,7 +2,6 @@ package com.ibm.event_sync.entity;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -14,8 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -32,15 +29,13 @@ public class Feedback {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public enum OrderStatus {
-        PENDING, PROCESSING, SHIPPED, DELIVERED, CANCELED
+    public enum Sentiment {
+        NEGATIVE, NEUTRAL, POSITIVE, PENDING
     }
 
     @JsonProperty(access = Access.READ_ONLY)
-    // @Min(1)
-    // @Max(5)
     @Column(nullable = false)
-    private String sentiment;
+    private Sentiment sentiment;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "event_id", nullable = false)
@@ -60,11 +55,11 @@ public class Feedback {
         this.id = id;
     }
 
-    public void setSentiment(String sentiment) {
+    public void setSentiment(Sentiment sentiment) {
         this.sentiment = sentiment;
     }
 
-    public String getSentiment() {
+    public Sentiment getSentiment() {
         return this.sentiment;
     }
 

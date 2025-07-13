@@ -7,6 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ibm.event_sync.entity.Event;
 import com.ibm.event_sync.entity.Feedback;
+import com.ibm.event_sync.entity.Feedback.Sentiment;
 import com.ibm.event_sync.repository.EventRepository;
 import com.ibm.event_sync.repository.FeedbackRepository;
 
@@ -33,7 +34,7 @@ public class FeedbackService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
         feedback.setEvent(event);
-        feedback.setSentiment("pending");
+        feedback.setSentiment(Sentiment.PENDING);
         Feedback savedFeedback = feedbackRepository.save(feedback);
 
         System.out.println("Synchrounous part which has pending sentiment: "+ savedFeedback.getSentiment()); /// TODO remove
