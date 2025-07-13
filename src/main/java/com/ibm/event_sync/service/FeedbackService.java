@@ -37,13 +37,9 @@ public class FeedbackService {
         feedback.setSentiment(Sentiment.PENDING);
         Feedback savedFeedback = feedbackRepository.save(feedback);
 
-        System.out.println("Synchrounous part which has pending sentiment: "+ savedFeedback.getSentiment()); /// TODO remove
-
         // Kick off async sentiment analysis
         sentimentService.analyzeAndUpdateSentimentAsync(savedFeedback.getId(), feedback.getText());
 
-        
-        System.out.println("The part where sentiment could be anything ;) : " + savedFeedback.getSentiment()); /// TODO remove
 
         return savedFeedback;
     }
