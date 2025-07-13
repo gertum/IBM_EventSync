@@ -37,8 +37,18 @@
                         }
                         events.forEach(event => {
                             const li = document.createElement('li');
-                            li.className = 'list-group-item';
-                            li.innerHTML = `<strong>${event.title}</strong><br><small>${event.description}</small>`;
+                            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+                            const infoDiv = document.createElement('div');
+                            infoDiv.innerHTML = `<strong>${event.title}</strong><br><small>${event.description}</small>`;
+
+                            const viewBtn = document.createElement('a');
+                            viewBtn.className = 'btn btn-primary btn-sm';
+                            viewBtn.href = `/events/${event.id}/feedback/`;
+                            viewBtn.textContent = 'View feedback';
+
+                            li.appendChild(infoDiv);
+                            li.appendChild(viewBtn);
                             list.appendChild(li);
                         });
                     })
