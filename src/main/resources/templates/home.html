@@ -1,6 +1,6 @@
-<!-- home.html -->
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
 
 <head>
     <title layout:fragment="title">Home Page</title>
@@ -10,15 +10,49 @@
     <div layout:fragment="content">
         <h2 class="text-success">Hello!</h2>
         <p class="lead">
-            Welcome to <span th:text="${appName}">Our App</span>. It helps teams organize events
-            like workshops, team buildings, or small conferences. After each event, participants
-            leave written feedback.
-            A backend application accepts this
-            feedback and automatically analyzes it using an AI sentiment analysis API (
-            Hugging Face). The system classifies each feedback as
-            positive, neutral, or negative and provides a summary per event.
+            Welcome to <span th:text="${appName}">My App</span>
         </p>
+
+        <h4 class="mt-4">Events</h4>
+        <ul id="eventsList" class="list-group mt-2">
+            <li class="list-group-item">Loading events...</li>
+        </ul>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                console.log("DOMContentLoaded fired");
+                fetch('/api/events')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("HTTP error " + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(events => {
+                        console.log("Fetched events:", events);
+                        const list = document.getElementById('eventsList');
+                        list.innerHTML = ''; // Clear loading message
+                        if (events.length === 0) {
+                            list.innerHTML = '<li class="list-group-item">No events available.</li>';
+                            return;
+                        }
+                        events.forEach(event => {
+                            const li = document.createElement('li');
+                            li.className = 'list-group-item';
+                            li.innerHTML = `<strong>${event.title}</strong><br><small>${event.description}</small>`;
+                            list.appendChild(li);
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error fetching events:", error);
+                        const list = document.getElementById('eventsList');
+                        list.innerHTML = '<li class="list-group-item text-danger">Failed to load events.</li>';
+                    });
+            });
+        </script>
+
     </div>
+
+
 </body>
 
 </html>
