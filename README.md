@@ -49,8 +49,10 @@ There is *.vscode/launch.json* file provided for debugging using the visual stud
 
 Project backend code is located in *src\main\java\com\ibm\event_sync* folder.
 
-* Web routes are defined in RouteController inside routing folder.
-* API routes are defined in controller folder.
+In there:
+* Web routes are defined inside *routing* folder.
+* API routes are defined in *controller* folder.
+* etc.
 
 Views are located in *src\main\resources\templates* folder.
 
