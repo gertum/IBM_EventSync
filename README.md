@@ -60,6 +60,8 @@ Tests are located in *src\test\java\com\ibm\event_sync* folder.
 
 ### Data
 
+![Architecture Diagram](docs/IBM_internship_task.drawio.png)
+
 ## Project specifications
 
 * Java 17
